@@ -30,5 +30,5 @@ public class Producto {
     private String marca;
 
     @Column(nullable = false)
-    private double precioProducto;
+    private float precioProducto;
 }
