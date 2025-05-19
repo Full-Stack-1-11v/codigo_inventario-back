@@ -23,7 +23,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Movimiento {
     @Id
-    @CreationTimestamp
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long movimientoId;
     
@@ -33,8 +32,9 @@ public class Movimiento {
     @Column(nullable = false)
     private String tipoMovimiento;
 
+  
     @Column(nullable = false)
-    private LocalDateTime fecha_hora;
+    private String fecha_hora;
 
     @Column(nullable = false)
     private String observaciones;

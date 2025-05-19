@@ -9,4 +9,5 @@ import cl.perfulandia.inventario.modelo.Stock;
 public interface StockRepository extends JpaRepository<Stock, Long> {
     List<Stock> findByProductoId(Long productoId);
     List<Stock> findBySucursalId(Long sucursalId);
+    
 }

@@ -7,10 +7,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import cl.perfulandia.inventario.modelo.Movimiento;
+import cl.perfulandia.inventario.modelo.Producto;
 
 @Repository
 public interface MovimientoRepository extends JpaRepository<Movimiento,Long>    {
-    List<Movimiento> findByProductoId(Long productoId);
+    List<Movimiento> findByProducto_ProductoId(Long productoId);
+
     List<Movimiento> findByTipoMovimiento(String tipoMovimiento);
-    List<Movimiento> findByFechaHoraBetween(LocalDateTime desde, LocalDateTime hasta);
+    List<Movimiento> findByProducto(Producto producto);
 }

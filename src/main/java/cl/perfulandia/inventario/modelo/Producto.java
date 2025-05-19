@@ -25,7 +25,7 @@ public class Producto {
     private Long productoId;
     
     @Column(unique=true,length = 20,nullable = false)
-    private String cod;
+    private String productoCod;
 
     @Column(nullable = false)
     private String nombreProducto;

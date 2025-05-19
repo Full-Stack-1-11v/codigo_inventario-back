@@ -36,7 +36,8 @@ public class Stock {
     @Column(nullable = false)
     private String estado;
    
-    
+    private Long sucursalId; 
+
     @ManyToOne
     @JoinColumn(name = "producto_id")
     private Producto producto;
@@ -49,5 +50,6 @@ public class Stock {
 
     @OneToMany(mappedBy = "stock", cascade = CascadeType.ALL)
     private List<Alerta> alertas;
+
     
 }

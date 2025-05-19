@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import cl.perfulandia.inventario.SucursalStock.MezclaSucurdalBase;
 import cl.perfulandia.inventario.modelo.Stock;
 import cl.perfulandia.inventario.service.stockService;
 import lombok.RequiredArgsConstructor;
@@ -21,11 +22,11 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1/stock")
 public class stockController {  
     @Autowired
-    private final stockService stockService;
+    private stockService stockService;
 
     @GetMapping("/producto/{producto_Id}")
     public List<Stock> obtenerPorProducto(@PathVariable Long productoId) {
-        return stockService.mostrarInfoStockSucursal(productoId);
+        return stockService.obtenerPorProducto(productoId);
     }
 
     @GetMapping("/sucursal/{sucursalId}")
@@ -51,4 +52,14 @@ public class stockController {
     }
 
    
+
+    public stockController(stockService stockService) {
+        this.stockService = stockService;
+    }
+
+    @GetMapping("/{id}/con-sucursal")
+    public ResponseEntity<MezclaSucurdalBase> getStockConSucursal(@PathVariable Long stockId) {
+        return ResponseEntity.ok(stockService.getStockConSucursal(stockId));
+    }
 }
+

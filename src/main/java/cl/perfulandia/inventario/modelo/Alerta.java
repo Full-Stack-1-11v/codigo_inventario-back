@@ -23,13 +23,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Alerta {
     @Id
-    @CreationTimestamp
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long alertaId;
+
     
     @Column(nullable = false)
-    private LocalDateTime fecha_creacion;
+    private String fechaCreacion;
 
+    
     @Column(nullable = false)
     private String estadoAlerta;
 

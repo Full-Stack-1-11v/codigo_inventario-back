@@ -10,6 +10,7 @@ import cl.perfulandia.inventario.modelo.Alerta;
 @Repository
 public interface AlertaRepository extends JpaRepository<Alerta, Long> {
     List<Alerta> findByEstadoAlerta(String estado);
-    List<Alerta> findByTipoAlerta(String tipo);
-    List<Alerta> findByProductoIdAndEstadoAlerta(Long productoId, String estado);
+    List<Alerta> findByProducto_ProductoId(Long productoId);
+
+    
 }

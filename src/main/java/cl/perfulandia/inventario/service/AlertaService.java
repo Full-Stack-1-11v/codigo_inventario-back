@@ -2,6 +2,7 @@ package cl.perfulandia.inventario.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -15,13 +16,19 @@ public class AlertaService {
     private final AlertaRepository alertaRepository;
 
     public Alerta crearAlerta(Alerta alerta) {
-        alerta.setFecha_creacion(LocalDateTime.now());
         alerta.setEstadoAlerta("pendiente");
         return alertaRepository.save(alerta);
     }
 
+    public List <Alerta> obtenerTodas(){
+        return alertaRepository.findAll();
+    }
     public List<Alerta> obtenerPorEstado(String estado) {
         return alertaRepository.findByEstadoAlerta(estado);
+    }
+    
+    public Optional<Alerta> obtenerPorId(Long alertaId){
+        return alertaRepository.findById(alertaId);
     }
 
     public void marcarComoResuelta(Long alertaId) {

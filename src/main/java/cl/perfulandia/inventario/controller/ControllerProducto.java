@@ -51,15 +51,15 @@ public class ControllerProducto {
         }
     }
 
-    //@GetMapping("/cod/{cod}")
-    //public ResponseEntity<Producto> buscarPorCod (@PathVariable String cod){
-        //try{
-            //Producto producto = productoService.buscarPorCod(cod);
-            //return ResponseEntity.ok(producto);
-        //}catch(Exception e){
-            //return ResponseEntity.notFound().build();
-        //}
-    //}
+    @GetMapping("/cod/{cod}")
+    public ResponseEntity<List<Producto>> buscarPorCod (@PathVariable String cod){
+        try{
+            List<Producto> producto = productoService.obtenerPorCod(cod);
+            return ResponseEntity.ok(producto);
+        }catch(Exception e){
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 
      @PutMapping("/actualizar/{id}")

@@ -19,6 +19,10 @@ public class ProductoService {
         return productoRepository.findById(id);
     }
 
+    public List<Producto> obtenerPorCod(String productoCod){
+        return productoRepository.findByProductoCod(productoCod);
+    }
+
     public Producto guardar(Producto producto) {
         return productoRepository.save(producto);
     }
@@ -26,7 +30,7 @@ public class ProductoService {
     public Producto actualizar(Long id, Producto nuevoProducto) {
         return productoRepository.findById(id).map(productoExistente -> {
             productoExistente.setProductoId(nuevoProducto.getProductoId());
-            productoExistente.setCod(nuevoProducto.getCod());
+            productoExistente.setProductoCod(nuevoProducto.getProductoCod());
             productoExistente.setNombreProducto(nuevoProducto.getNombreProducto());
             productoExistente.setMarca(nuevoProducto.getMarca());
             productoExistente.setPrecioProducto(nuevoProducto.getPrecioProducto());
