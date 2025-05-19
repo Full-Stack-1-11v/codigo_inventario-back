@@ -1,54 +1,45 @@
 package cl.perfulandia.inventario.service;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import cl.perfulandia.inventario.feign.productoSucursal;
-import cl.perfulandia.inventario.modelo.Producto;
-import cl.perfulandia.inventario.modelo.Stock;
-import cl.perfulandia.inventario.repository.ProductoRepository;
-import jakarta.transaction.Transactional;
-
 import java.util.List;
+import java.util.Optional;
+import org.springframework.stereotype.Service;
+import cl.perfulandia.inventario.modelo.Producto;
+import cl.perfulandia.inventario.repository.ProductoRepository;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 @Service
-@Transactional
+@RequiredArgsConstructor
 public class ProductoService {
-    @Autowired
-    ProductoRepository ProductoRepository;
+    private final ProductoRepository productoRepository;
 
-    public ProductoService(productoSucursal productoSucursal) {
-        this.productoSucursal = productoSucursal;
+    public List<Producto> obtenerTodos() {
+        return productoRepository.findAll();
     }
 
-    public List<Producto> listarProductos() {
-        return ProductoRepository.findAll();
+    public Optional<Producto> obtenerPorId(Long id) {
+        return productoRepository.findById(id);
     }
 
-    public Producto guardarProductos(Producto producto) {
-        return ProductoRepository.save(producto);
+    public Producto guardar(Producto producto) {
+        return productoRepository.save(producto);
     }
 
-    //public Producto buscarPorCod(String cod) {
-        //return ProductoRepository.buscarPorCod(cod).orElse(null);
-    //}
-
-    public Producto buscarPorId(long id) {
-        return ProductoRepository.findById(id).get();
+    public Producto actualizar(Long id, Producto nuevoProducto) {
+        return productoRepository.findById(id).map(productoExistente -> {
+            productoExistente.setProductoId(nuevoProducto.getProductoId());
+            productoExistente.setCod(nuevoProducto.getCod());
+            productoExistente.setNombreProducto(nuevoProducto.getNombreProducto());
+            productoExistente.setMarca(nuevoProducto.getMarca());
+            productoExistente.setPrecioProducto(nuevoProducto.getPrecioProducto());
+            return productoRepository.save(productoExistente);
+        }).orElseThrow(() -> new EntityNotFoundException("Producto no encontrado con ID: " + id));
     }
 
-    public void eliminarProducto(long id) {
-        ProductoRepository.deleteById(id);
+    public void eliminar(Long id) {
+        if (!productoRepository.existsById(id)) {
+            throw new EntityNotFoundException("Producto no encontrado con ID: " + id);
+        }
+        productoRepository.deleteById(id);
     }
 
-    private final productoSucursal productoSucursal;
-
-   
-
-    public void mostrarInfoStockSucursal(Long id) {
-        Stock stock = productoSucursal.obtenerStocks(id);
-        System.out.println("Sucursal: " + stock.getStockId());
-
-        
-    }
-}
     
+}

@@ -1,9 +1,9 @@
 package cl.perfulandia.inventario.modelo;
 
+import java.time.LocalDateTime;
 
-import java.util.List;
+import org.hibernate.annotations.CreationTimestamp;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,7 +11,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,35 +18,36 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@Table(name="Stock")
+@Table(name="Movimiento")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Stock {
+public class Movimiento {
     @Id
+    @CreationTimestamp
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long stockId;
+    private Long movimientoId;
     
     @Column(nullable = false)
     private int cantidad;
     
     @Column(nullable = false)
-    private int stockMinimo;
-    
+    private String tipoMovimiento;
+
     @Column(nullable = false)
-    private String estado;
-   
-    
+    private LocalDateTime fecha_hora;
+
+    @Column(nullable = false)
+    private String observaciones;
+
     @ManyToOne
     @JoinColumn(name = "producto_id")
     private Producto producto;
 
-    @OneToMany(mappedBy = "stockOrigen")
-    private List<Movimiento> movimientosOrigen;
+    @ManyToOne
+    @JoinColumn(name = "stock_origen_id")
+    private Stock stockOrigen;
 
-    @OneToMany(mappedBy = "stockDestino")
-    private List<Movimiento> movimientosDestino;
-
-    @OneToMany(mappedBy = "stock", cascade = CascadeType.ALL)
-    private List<Alerta> alertas;
-    
+    @ManyToOne
+    @JoinColumn(name = "stock_destino_id")
+    private Stock stockDestino;
 }

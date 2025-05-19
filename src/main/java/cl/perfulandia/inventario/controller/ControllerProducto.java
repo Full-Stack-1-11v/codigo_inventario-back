@@ -1,6 +1,7 @@
 package cl.perfulandia.inventario.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,7 +27,7 @@ public class ControllerProducto {
 
     @GetMapping("/listar")
     public ResponseEntity<List<Producto>> listarProductos(){
-        List<Producto> productos = productoService.listarProductos();
+        List<Producto> productos = productoService.obtenerTodos();
         if (productos.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
@@ -35,14 +37,14 @@ public class ControllerProducto {
 
     @PostMapping("/agregar")
     public ResponseEntity <Producto> guardar (@RequestBody Producto producto){
-        Producto productoNuevo = productoService.guardarProductos(producto);
+        Producto productoNuevo = productoService.guardar(producto);
         return ResponseEntity.status(HttpStatus.CREATED).body(productoNuevo);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Producto> buscarProducto (@PathVariable long id){
+    @GetMapping("/buscar/{id}")
+    public ResponseEntity<Optional<Producto>> buscarProducto (@PathVariable long id){
         try{
-            Producto producto = productoService.buscarPorId(id);
+            Optional<Producto> producto = productoService.obtenerPorId(id);
             return ResponseEntity.ok(producto);
         }catch(Exception e){
             return ResponseEntity.notFound().build();
@@ -60,19 +62,15 @@ public class ControllerProducto {
     //}
 
 
-    //@PutMapping("/actualizar/{id}")
-    //public ResponseEntity<Producto> actualizarProducto(@PathVariable Long id, @RequestBody Producto producto) {
-        //Producto productoActualizado = productoService.actualizarProducto(id, producto);
-        //if (productoActualizado == null) {
-            //return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        //}
-        //return ResponseEntity.ok(productoActualizado);
-    //}
+     @PutMapping("/actualizar/{id}")
+    public ResponseEntity<Producto> actualizar(@PathVariable Long id, @RequestBody Producto producto) {
+        return ResponseEntity.ok(productoService.actualizar(id, producto));
+    }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("eliminar/{id}")
     public ResponseEntity<?> eliminarProducto(@PathVariable long id){
         try {
-            productoService.eliminarProducto(id);
+            productoService.eliminar(id);
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
