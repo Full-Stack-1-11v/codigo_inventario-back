@@ -19,4 +19,5 @@ public class Sucursal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long sucursalId;
     private String nombre;
+    
 }
