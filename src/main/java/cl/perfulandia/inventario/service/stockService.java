@@ -4,47 +4,14 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
-import cl.perfulandia.inventario.SucursalStock.MezclaSucurdalBase;
 import cl.perfulandia.inventario.modelo.Stock;
 import cl.perfulandia.inventario.repository.StockRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-
 @Service
 @RequiredArgsConstructor
-public class stockService {
-    @Autowired
-    private final stockRepository stockRepository;
-    private final productoSucursal productoSucursal;
-
-    public stockService(StockRepository stockRepository, productoSucursal productoSucursal) {
-        this.stockRepository = stockRepository;
-        this.productoSucursal = productoSucursal;
-    }
-
-    public MezclaSucurdalBase getStockConSucursal(Long stockId) {
-        // Obtener stock de la base de datos
-        Stock stock = stockRepository.findById(stockId)
-            .orElseThrow(() -> new RuntimeException("Stock no encontrado"));
-
-        // Llamar al microservicio de sucursal usando Feign
-        MezclaSucurdalBase sucursal = productoSucursal.getSucursalById(stock.getSucursalId());
-
-        // Combinar stock y sucursal en un DTO
-        return new MezclaSucurdalBase(stock, sucursal);
-    } 
-
-    public List<Stock> obtenerPorProducto(Long productoId) {
-        return stockRepository.findByProductoId(productoId);
-    }
-
-    public List<Stock> obtenerPorSucursal(Long sucursalId) {
-        return stockRepository.findBySucursalId(sucursalId);
-    }
-
-    public Optional<Stock> obtenerPorId(Long id) {
-        return stockRepository.findById(id);
-    }
+public class StockService {
+    private final StockRepository stockRepository;
 
     public Stock guardar(Stock stock) {
         return stockRepository.save(stock);
