@@ -1,32 +1,30 @@
 package cl.perfulandia.inventario.service;
-
-import java.time.LocalDateTime;
 import java.util.List;
-
 import org.springframework.stereotype.Service;
-
 import cl.perfulandia.inventario.modelo.Movimiento;
-import cl.perfulandia.inventario.modelo.Producto;
 import cl.perfulandia.inventario.repository.MovimientoRepository;
-import lombok.RequiredArgsConstructor;
+
 @Service
-@RequiredArgsConstructor
 public class MovimientoService {
-    private final MovimientoRepository movimientoRepository;
-    
+    private final MovimientoRepository repository;
 
-    public List<Movimiento> obtenerPorProducto(Producto producto) {
-        return movimientoRepository.findByProducto(producto);
+    public MovimientoService(MovimientoRepository repository) {
+        this.repository = repository; 
     }
 
-  
-
-    public Movimiento agregarMovimiento(Movimiento movimiento) {
-        return movimientoRepository.save(movimiento);
+    public List<Movimiento> listar() {
+        return repository.findAll(); 
     }
 
+    public Movimiento guardar(Movimiento movimiento) {
+        return repository.save(movimiento); 
+    }
 
-    public List<Movimiento> obtenerTodos(Producto productoId) {
-        return movimientoRepository.findByProducto(productoId);
+    public Movimiento buscar(long id){
+        return repository.findById(id).get();
+    }
+
+    public void eliminar (long id){
+        repository.deleteById(id);
     }
 }

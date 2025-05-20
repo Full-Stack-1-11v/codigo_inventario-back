@@ -1,30 +1,60 @@
 package cl.perfulandia.inventario.controller;
 import cl.perfulandia.inventario.modelo.Movimiento;
-import cl.perfulandia.inventario.modelo.Producto;
 import cl.perfulandia.inventario.service.MovimientoService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api/v1/movimiento")
 public class ControllerMovimiento {
     private final MovimientoService movimientoService;
 
-    // Registrar un nuevo movimiento (ingreso, egreso, transferencia)
-    @PostMapping
-    public ResponseEntity<Movimiento> registrarMovimiento(@RequestBody Movimiento movimiento) {
-        Movimiento registrado = movimientoService.agregarMovimiento(movimiento);
-        return ResponseEntity.ok(registrado);
+    public ControllerMovimiento(MovimientoService movimientoService) {
+        this.movimientoService = movimientoService;
     }
 
-    // Obtener todos los movimientos
-    @GetMapping("/ListarTodos")
-    public ResponseEntity<List<Movimiento>> listarTodos(@RequestBody Producto productoId) {
-        return ResponseEntity.ok(movimientoService.obtenerTodos(productoId));
+    @PostMapping("/agregar")
+    public ResponseEntity <Movimiento> guardar (@RequestBody Movimiento movimiento){
+        Movimiento movNuevo = movimientoService.guardar(movimiento);
+        return ResponseEntity.status(HttpStatus.CREATED).body(movNuevo);
+    }
+
+    @GetMapping("/listar")
+    public ResponseEntity<List<Movimiento>> listarMov(){
+        List<Movimiento> movimientos = movimientoService.listar();
+        if (movimientos.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(movimientos);
+        
+    }
+
+    @GetMapping("/buscar/{id}")
+    public ResponseEntity<Movimiento> buscarMov (@PathVariable long id){
+        try{
+            Movimiento movimiento = movimientoService.buscar(id);
+            return ResponseEntity.ok(movimiento);
+        }catch(Exception e){
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("eliminar/{id}")
+    public ResponseEntity<?> eliminarMov(@PathVariable long id){
+        try {
+            movimientoService.eliminar(id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/actualizar/{id}")
+    public ResponseEntity<Movimiento> actualizar(@PathVariable Long id, @RequestBody Movimiento movimiento) {
+        return ResponseEntity.ok(movimientoService.guardar(movimiento));
     }
     
 
