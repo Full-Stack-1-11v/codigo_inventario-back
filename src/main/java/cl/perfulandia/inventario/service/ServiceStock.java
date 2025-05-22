@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import cl.perfulandia.inventario.dto.StockDto;
 import cl.perfulandia.inventario.dto.SucursalDto;
 import cl.perfulandia.inventario.feign.productoSucursal;
 import cl.perfulandia.inventario.modelo.Stock;
@@ -18,6 +20,22 @@ public class ServiceStock {
 
     @Autowired
     private productoSucursal productoSucursal;
+
+    public void actualizarStockYNotificar(Long productoId, int nuevaCantidad, Long sucursalId) {
+        // Actualizar stock local
+        Stock stock = repository.findById(productoId)
+                        .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+        stock.setCantidad(nuevaCantidad);
+        repository.save(stock);
+
+        // Crear el DTO
+        StockDto dto = new StockDto();
+        dto.setProductoId(productoId);
+        dto.setNuevaCantidad(nuevaCantidad);
+
+        // Notificar a la sucursal
+        productoSucursal.actualizarStockSucursal(sucursalId, dto);
+    }
 
     public void verificarSucursalExistente(Long sucursalId) {
         SucursalDto sucursal = productoSucursal.obtenerSucursal(sucursalId);

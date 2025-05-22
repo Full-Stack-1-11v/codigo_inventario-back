@@ -50,18 +50,7 @@ public class ControllerProducto {
             return ResponseEntity.notFound().build();
         }
     }
-
-    //@GetMapping("/cod/{cod}")
-    //public ResponseEntity<List<Producto>> buscarPorCod (@PathVariable String cod){
-        //try{
-            //List<Producto> producto = productoService.obtenerPorCod(cod);
-            //return ResponseEntity.ok(producto);
-        //}catch(Exception e){
-            //return ResponseEntity.notFound().build();
-        //}
-    //}
-
-
+    
     @PutMapping("/actualizar/{id}")
     public ResponseEntity<Producto> actualizar(@PathVariable Long id, @RequestBody Producto producto) {
         return ResponseEntity.ok(productoService.guardar(producto));

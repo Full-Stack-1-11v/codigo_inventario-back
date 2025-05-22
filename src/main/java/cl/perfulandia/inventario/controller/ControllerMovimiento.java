@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
 @RequestMapping("/api/v1/movimiento")
 public class ControllerMovimiento {
@@ -14,12 +15,6 @@ public class ControllerMovimiento {
 
     public ControllerMovimiento(MovimientoService movimientoService) {
         this.movimientoService = movimientoService;
-    }
-
-    @PostMapping("/agregar")
-    public ResponseEntity <Movimiento> guardar (@RequestBody Movimiento movimiento){
-        Movimiento movNuevo = movimientoService.guardar(movimiento);
-        return ResponseEntity.status(HttpStatus.CREATED).body(movNuevo);
     }
 
     @GetMapping("/listar")
@@ -31,6 +26,13 @@ public class ControllerMovimiento {
         return ResponseEntity.ok(movimientos);
         
     }
+
+    @PostMapping("/agregar")
+    public ResponseEntity <Movimiento> guardarMov (@RequestBody Movimiento movimiento){
+        Movimiento movNuevo = movimientoService.guardar(movimiento);
+        return ResponseEntity.status(HttpStatus.CREATED).body(movNuevo);
+    }
+    
 
     @GetMapping("/buscar/{id}")
     public ResponseEntity<Movimiento> buscarMov (@PathVariable long id){
