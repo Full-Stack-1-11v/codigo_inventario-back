@@ -1,4 +1,6 @@
 package cl.perfulandia.inventario.modelo;
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,7 +24,7 @@ public class Movimiento {
     @Column(name="movimiento_id")
     private Long movimientoId;
     @Column(name="fecha")
-    private String fecha;
+    private LocalDateTime fecha;
     @Column(name="tipo")
     private String tipo; // INGRESO o SALIDA
     @Column(name="cantidad")
@@ -31,8 +33,10 @@ public class Movimiento {
     @ManyToOne
     @JoinColumn(name="producto_id")
     private Producto producto;
+    
+    private Long sucursalId;
 
-    @ManyToOne
-    @JoinColumn(name="sucursal_id")
-    private Sucursal sucursal;
+    //@ManyToOne
+    //@JoinColumn(name="sucursal_id")
+    //private Sucursal sucursal;
 }

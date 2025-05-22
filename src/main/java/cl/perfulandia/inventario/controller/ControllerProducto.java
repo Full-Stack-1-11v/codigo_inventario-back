@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import cl.perfulandia.inventario.modelo.Producto;
 import cl.perfulandia.inventario.service.ProductoService;
@@ -25,6 +26,7 @@ public class ControllerProducto {
         this.productoService = productoService;
     }
 
+    //Listar Todos los Producto
     @GetMapping("/listar")
     public ResponseEntity<List<Producto>> listarProductos(){
         List<Producto> productos = productoService.listar();
@@ -34,28 +36,49 @@ public class ControllerProducto {
         return ResponseEntity.ok(productos);
         
     }
-
+    
+    //Listo productos activos
+    @GetMapping("/listar/activos")
+    public ResponseEntity<List<Producto>> listarProductosActivos() {
+        List<Producto> productos = productoService.listarProductosActivos();
+        return ResponseEntity.ok(productos);
+    }
+    
+    //Agrego producto
     @PostMapping("/agregar")
     public ResponseEntity <Producto> guardar (@RequestBody Producto producto){
         Producto productoNuevo = productoService.guardar(producto);
         return ResponseEntity.status(HttpStatus.CREATED).body(productoNuevo);
     }
 
+    //Busco producto por id
     @GetMapping("/buscar/{id}")
     public ResponseEntity<Producto> buscarProducto (@PathVariable long id){
         try{
-            Producto producto = productoService.buscar(id);
+            Producto producto = productoService.obtenerProductoPorId(id);
             return ResponseEntity.ok(producto);
         }catch(Exception e){
             return ResponseEntity.notFound().build();
         }
     }
     
-    @PutMapping("/actualizar/{id}")
-    public ResponseEntity<Producto> actualizar(@PathVariable Long id, @RequestBody Producto producto) {
-        return ResponseEntity.ok(productoService.guardar(producto));
+    //Busco por nombre
+    @GetMapping("/buscar/nombre")
+    public ResponseEntity<List<Producto>> buscarPorNombre(@RequestParam String nombre) {
+        List<Producto> productos = productoService.buscarProductosPorNombre(nombre);
+        return ResponseEntity.ok(productos);
     }
 
+    //Actualizo Producto por id
+    @PutMapping("/{id}")
+    public ResponseEntity<Producto> actualizarProducto(
+            @PathVariable Long id,
+            @RequestBody Producto producto) {
+        Producto actualizado = productoService.actualizarProducto(id, producto);
+        return ResponseEntity.ok(actualizado);
+    }
+
+    //Eliminar producto por id
     @DeleteMapping("eliminar/{id}")
     public ResponseEntity<?> eliminarProducto(@PathVariable long id){
         try {

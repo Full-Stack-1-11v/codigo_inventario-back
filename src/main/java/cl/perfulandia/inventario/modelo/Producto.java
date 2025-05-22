@@ -28,6 +28,7 @@ public class Producto {
     private String descripcion;
     @Column(name="marca")
     private String marca;
+    private boolean activo;
     @Column(name="stock_minimo")
     private Integer stockMinimo;
     @Column(name="precio_producto")
@@ -36,5 +37,6 @@ public class Producto {
 
     @OneToMany(mappedBy = "producto")
     private List<Stock> stocks;
+   
 
 }

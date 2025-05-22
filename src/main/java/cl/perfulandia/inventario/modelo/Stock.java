@@ -28,9 +28,12 @@ public class Stock {
     @JoinColumn(name = "producto_id")
     private Producto producto;
 
-    @ManyToOne
-    @JoinColumn(name="sucursal_id")
-    private Sucursal sucursal;
+
+    private Long sucursalId;
+    
+    //@ManyToOne
+    //@JoinColumn(name="sucursal_id")
+    //private Sucursal sucursal;
 
     
 }

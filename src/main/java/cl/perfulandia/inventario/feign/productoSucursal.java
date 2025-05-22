@@ -17,7 +17,7 @@ public interface productoSucursal {
    
                                   
     @GetMapping("/api/v1/inventario/sucursal/{id}")
-    SucursalDto obtenerSucursal(@PathVariable("id")Long id);
+    SucursalDto obtenerSucursalPorId(@PathVariable("id")Long id);
 
     
 
