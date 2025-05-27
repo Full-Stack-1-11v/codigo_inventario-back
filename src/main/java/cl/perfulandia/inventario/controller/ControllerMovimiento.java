@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("movimientos")
+@RequestMapping("/movimientos")
 public class ControllerMovimiento {
 
     private final MovimientoService movimientoService;

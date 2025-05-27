@@ -89,5 +89,19 @@ public class ControllerProducto {
         }
     }
 
+    @PostMapping("/inventario/sucursal/{sucursalId}/agregar")
+    public ResponseEntity<String> agregarProductosASucursal(
+             @PathVariable("sucursalId") Long sucursalId,
+            @RequestBody List<Long> idsProductos) {
 
-}
+ 
+        productoService.agregarProductosASucursal(sucursalId, idsProductos);
+
+        return ResponseEntity.ok("Productos asignados correctamente a la sucursal " + sucursalId);
+    }
+
+    @GetMapping("/sucursal/{sucursalId}")
+    public ResponseEntity<List<Producto>> obtenerProductosPorSucursal(@PathVariable Long sucursalId) {
+        return ResponseEntity.ok(productoService.obtenerProductosPorSucursal(sucursalId));
+    }
+}   
