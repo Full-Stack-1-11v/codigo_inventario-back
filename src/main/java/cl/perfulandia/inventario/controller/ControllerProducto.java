@@ -92,10 +92,10 @@ public class ControllerProducto {
     @PostMapping("/inventario/sucursal/{sucursalId}/agregar")
     public ResponseEntity<String> agregarProductosASucursal(
              @PathVariable("sucursalId") Long sucursalId,
-            @RequestBody List<Long> idsProductos) {
+            @RequestBody List<Long> idProductos) {
 
  
-        productoService.agregarProductosASucursal(sucursalId, idsProductos);
+        productoService.agregarProductosASucursal(sucursalId, idProductos);
 
         return ResponseEntity.ok("Productos asignados correctamente a la sucursal " + sucursalId);
     }
