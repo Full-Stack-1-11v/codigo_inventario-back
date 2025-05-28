@@ -55,7 +55,7 @@ public class ProductoService {
         repository.deleteById(id);
     }
 
-    public void agregarProductosASucursal(Long sucursalId, List<Long> idProductos) {
+    public void asignarProductosASucursal(Long sucursalId, List<Long> idProductos) {
         List<Producto> productos = repository.findAllById(idProductos);
         for (Producto producto : productos) {
             producto.setSucursalId(sucursalId);

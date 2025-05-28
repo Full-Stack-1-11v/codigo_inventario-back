@@ -1,6 +1,8 @@
 package cl.perfulandia.inventario.controller;
 
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import cl.perfulandia.inventario.feign.SucursalClient;
 import cl.perfulandia.inventario.modelo.Producto;
 import cl.perfulandia.inventario.service.ProductoService;
 
@@ -89,14 +93,14 @@ public class ControllerProducto {
         }
     }
 
-    @PostMapping("/inventario/sucursal/{sucursalId}/agregar")
-    public ResponseEntity<String> agregarProductosASucursal(
-             @PathVariable("sucursalId") Long sucursalId,
+    @Autowired
+    private SucursalClient sucursalClient;
+    @PostMapping("/{sucursalId}/productos")
+    public ResponseEntity<String> asignarProductosASucursal(
+            @PathVariable Long sucursalId,
             @RequestBody List<Long> idProductos) {
 
- 
-        productoService.agregarProductosASucursal(sucursalId, idProductos);
-
+            sucursalClient.asignarProductosASucursal(sucursalId, idProductos);
         return ResponseEntity.ok("Productos asignados correctamente a la sucursal " + sucursalId);
     }
 

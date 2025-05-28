@@ -20,5 +20,5 @@ public interface SucursalClient {
     SucursalDto obtenerSucursalPorId(@PathVariable("id") Long id);
 
     @PostMapping("/inventario/sucursal/{sucursalId}/agregar")
-    String agregarProductosASucursal(@PathVariable("sucursalId") Long sucursalId, @RequestBody List<Long> idProductos);
+    String asignarProductosASucursal(@PathVariable("sucursalId") Long sucursalId, @RequestBody List<Long> idProductos);
 }
